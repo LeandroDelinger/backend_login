@@ -1,8 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
-const authConfig = require("../config/auth.json");
+const generateToken = require("./generateToken");
 
 const User = require("../../models/User");
 
@@ -22,10 +20,7 @@ module.exports = {
     //não retornar a senha
     user.password = undefined;
     //gerando um token
-    const token = jwt.sign({ id: user.id }, authConfig.secret, {
-      expiresIn: 86400,
-    });
 
-    res.send({ user, token });
+    res.send({ user, token: generateToken({ id: user.id }) });
   },
 };
